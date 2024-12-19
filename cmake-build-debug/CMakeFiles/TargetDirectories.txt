@@ -1,0 +1,3 @@
+C:/Users/alexa/OneDrive - ISEC/UNI/Eng. INF/4º ano/POO/TP/TPv2/cmake-build-debug/CMakeFiles/TPv2.dir
+C:/Users/alexa/OneDrive - ISEC/UNI/Eng. INF/4º ano/POO/TP/TPv2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/alexa/OneDrive - ISEC/UNI/Eng. INF/4º ano/POO/TP/TPv2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

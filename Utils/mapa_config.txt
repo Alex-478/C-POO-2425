@@ -1,0 +1,16 @@
+5 5
+1 . . . .
+. 1 + . .
+. . 1 . .
+. . . . .
+. . . 1 .     
+
+1000 coins                 
+instants_among_new_items 10 
+duration_item 20           
+max_items 5                
+sale_price 2               
+purchase_price 1           
+caravan_price 100         
+moments_between_new_barbs 40 
+duration_barbarians 60     

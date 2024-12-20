@@ -5,7 +5,9 @@
 
 class CaravanaComercio : public Caravana {
 public:
-    CaravanaComercio(int id, int linha, int coluna);
+    CaravanaComercio(int linha, int coluna);
+
+
     void mostrarEstado() const override; // Substitui mostrarEstado
     void mover(char direcao) override;   // Substitui mover
 };

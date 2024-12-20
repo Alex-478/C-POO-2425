@@ -4,6 +4,15 @@
 #include <iostream>
 #include <cstring> // Para memset
 #include <string>
+#include <vector>
+#include "../Caravanas/Caravana.h"
+#include "../Caravanas/CaravanaComercio.h"
+#include "../Caravanas/CaravanaMilitar.h"
+#include "../Caravanas/CaravanaSecreta.h"
+
+#include "../Itens/Item.h"
+using namespace std;
+
 
 using namespace std;
 
@@ -25,13 +34,18 @@ class Mapa {
 public:
     Mapa();
     ~Mapa();  // Destrutor para liberar a memória alocada
+    void limpar();
     void carregarDeArquivo(const std::string& nomeArquivo); // Carrega o mapa de um ficheiro
     void exibir() const;  // Mostra o mapa no ecrã
     char obterCelula(int linha, int coluna) const; // Retorna o valor de uma célula
     void definirCelula(int linha, int coluna, char valor);  // Define o valor de uma célula
     int obterLinhas() const;  // Retorna o número de linhas
     int obterColunas() const; // Retorna o número de colunas
-    int atualizaMapa();
+
+
+    void atualizarCaravanas(const vector<Caravana *> &caravanas);
+    void atualizarItens(const vector<Item> &itens);
+
 };
 
 

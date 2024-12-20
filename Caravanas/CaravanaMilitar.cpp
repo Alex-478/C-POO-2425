@@ -1,7 +1,7 @@
 #include "CaravanaMilitar.h"
 
-CaravanaMilitar::CaravanaMilitar(int id, int linha, int coluna)
-    : Caravana(id, "Militar", linha, coluna) {}
+CaravanaMilitar::CaravanaMilitar(int linha, int coluna)
+    : Caravana("Militar", linha, coluna) {}
 
 void CaravanaMilitar::mostrarEstado() const {
     cout << "Caravana Militar: ";
@@ -11,4 +11,8 @@ void CaravanaMilitar::mostrarEstado() const {
 void CaravanaMilitar::mover(char direcao) {
     Caravana::mover(direcao); // Movimento básico da caravana
     cout << "Caravana Militar moveu-se estrategicamente." << endl;
+}
+
+char CaravanaMilitar::obterRepresentacao() const {
+    return '!'; // Retorna '!' para caravanas bárbaras
 }

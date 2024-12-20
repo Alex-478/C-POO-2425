@@ -103,6 +103,12 @@ build CMakeFiles/TPv2.dir/Simulador/Simulador.cpp.obj: CXX_COMPILER__TPv2_unscan
   OBJECT_DIR = CMakeFiles\TPv2.dir
   OBJECT_FILE_DIR = CMakeFiles\TPv2.dir\Simulador
 
+build CMakeFiles/TPv2.dir/Cidade/Cidade.cpp.obj: CXX_COMPILER__TPv2_unscanned_Debug C$:/Users/alexa/OneDrive$ -$ ISEC/UNI/Eng.$ INF/4º$ ano/POO/TP/TPv2/Cidade/Cidade.cpp || cmake_object_order_depends_target_TPv2
+  DEP_FILE = CMakeFiles\TPv2.dir\Cidade\Cidade.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\TPv2.dir
+  OBJECT_FILE_DIR = CMakeFiles\TPv2.dir\Cidade
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target TPv2
@@ -111,7 +117,7 @@ build CMakeFiles/TPv2.dir/Simulador/Simulador.cpp.obj: CXX_COMPILER__TPv2_unscan
 #############################################
 # Link the executable TPv2.exe
 
-build TPv2.exe: CXX_EXECUTABLE_LINKER__TPv2_Debug CMakeFiles/TPv2.dir/main.cpp.obj CMakeFiles/TPv2.dir/Buffer/Buffer.cpp.obj CMakeFiles/TPv2.dir/Caravanas/Caravana.cpp.obj CMakeFiles/TPv2.dir/Caravanas/CaravanaMilitar.cpp.obj CMakeFiles/TPv2.dir/Caravanas/CaravanaComercio.cpp.obj CMakeFiles/TPv2.dir/Caravanas/CaravanaSecreta.cpp.obj CMakeFiles/TPv2.dir/Mapa/Mapa.cpp.obj CMakeFiles/TPv2.dir/Itens/Item.cpp.obj CMakeFiles/TPv2.dir/Simulador/Simulador.cpp.obj
+build TPv2.exe: CXX_EXECUTABLE_LINKER__TPv2_Debug CMakeFiles/TPv2.dir/main.cpp.obj CMakeFiles/TPv2.dir/Buffer/Buffer.cpp.obj CMakeFiles/TPv2.dir/Caravanas/Caravana.cpp.obj CMakeFiles/TPv2.dir/Caravanas/CaravanaMilitar.cpp.obj CMakeFiles/TPv2.dir/Caravanas/CaravanaComercio.cpp.obj CMakeFiles/TPv2.dir/Caravanas/CaravanaSecreta.cpp.obj CMakeFiles/TPv2.dir/Mapa/Mapa.cpp.obj CMakeFiles/TPv2.dir/Itens/Item.cpp.obj CMakeFiles/TPv2.dir/Simulador/Simulador.cpp.obj CMakeFiles/TPv2.dir/Cidade/Cidade.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\TPv2.dir

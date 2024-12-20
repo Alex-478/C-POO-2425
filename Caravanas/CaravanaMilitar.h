@@ -6,9 +6,10 @@
 
 class CaravanaMilitar : public Caravana{
 public:
-    CaravanaMilitar(int id, int linha, int coluna);
+    CaravanaMilitar(int linha, int coluna);
     void mostrarEstado() const override; // Substitui mostrarEstado
     void mover(char direcao) override;   // Substitui mover
+    char obterRepresentacao() const override;
 };
 
 

@@ -19,4 +19,6 @@ add_executable(TPv2 main.cpp
         Itens/Item.cpp
         Itens/Item.h
         Simulador/Simulador.cpp
-        Simulador/Simulador.h)
+        Simulador/Simulador.h
+        Cidade/Cidade.cpp
+        Cidade/Cidade.h)

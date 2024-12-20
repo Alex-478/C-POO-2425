@@ -39,7 +39,10 @@ void Simulador::limparBuffer() {
 }
 
 void Simulador::atualizarMapa() {
+    mapa.atualizarCaravanas(caravanas);
+    mapa.atualizarItens(itens);
 
+    /*
     for (const Caravana* caravana : caravanas) {
         //buffer[caravana->obterLinha()][caravana->obterColuna()] = 'C';
         mapa.definirCelula(caravana->obterLinha(),caravana->obterColuna(),'C');
@@ -50,6 +53,7 @@ void Simulador::atualizarMapa() {
         //buffer[item.obterLinha()][item.obterColuna()] = '*';
         mapa.definirCelula(item.obterLinha(),item.obterColuna(),'*');
     }
+    */
 
 
     //limparBuffer();
@@ -77,11 +81,40 @@ void Simulador::carregarConfiguracao(const string& nomeArquivo) {
     cout << "Carregando configuração do arquivo: " << nomeArquivo << endl;
     mapa.carregarDeArquivo(nomeArquivo);
     inicializarBuffer();
+    //Cria os obejtos dos caracters do mapa
+    criarObjetosInciais();
     // Exemplo de criação inicial de caravanas
-    caravanas.push_back(new CaravanaComercio(1, 0, 0));
-    caravanas.push_back(new CaravanaMilitar(2, 1, 1));
-    caravanas.push_back(new CaravanaSecreta(3, 2, 2));
+    caravanas.push_back(new CaravanaComercio(0, 0));
+    caravanas.push_back(new CaravanaMilitar(1, 1));
+    caravanas.push_back(new CaravanaSecreta( 2, 2));
 }
+
+void Simulador::criarObjetosInciais() {
+    for (int r = 0; r < linhas; ++r) {
+        for (int c = 0; c < colunas; ++c) {
+            char ch = mapa.obterCelula(r, c);
+
+            if (ch >= '0' && ch <= '9') {
+                // Cria uma caravana comercial
+                caravanas.push_back(new CaravanaComercio( r, c));
+                cout << "Caravana Comercial criada na posicao (" << r << ", " << c << ")\n";
+            } else if (ch == '!') {
+                // Cria uma caravana bárbara
+                caravanas.push_back(new CaravanaMilitar( r, c));
+                cout << "Caravana Barbara criada na posicao (" << r << ", " << c << ")\n";
+            } else if (ch >= 'a' && ch <= 'z') {
+                // Cria uma cidade
+                cidades.push_back(new Cidade(ch, r, c));
+                cout << "Cidade criada na posicao (" << r << ", " << c << ")\n";
+            } else if (ch == '*') {
+                // Cria um item
+                //itens.push_back(new Item(r, c, ItemType::Surpresa, 20));
+                cout << "Item criado na posicao (" << r << ", " << c << ")\n";
+            }
+        }
+    }
+}
+
 
 void Simulador::executar() {
     string comando;
@@ -90,8 +123,7 @@ void Simulador::executar() {
         //atualizarBuffer();
         atualizarMapa();
 
-
-        limparBuffer();
+        //limparBuffer();
         buffer2.limpar();
         buffer2.atualizarBuffer(mapa);
         buffer2.mostrar();

@@ -13,6 +13,14 @@ Mapa::~Mapa() {
     }
 }
 
+void Mapa::limpar() {
+    for (int r = 0; r < linhas; ++r) {
+        for (int c = 0; c < colunas; ++c) {
+            tabela[r][c] = '.';  // Define cada célula como 'vazia'
+        }
+    }
+}
+
 void Mapa::carregarDeArquivo(const string& nomeArquivo) {
     ifstream arquivo(nomeArquivo);
     if (!arquivo) {
@@ -90,3 +98,15 @@ void Mapa::definirCelula(int linha, int coluna, char valor) {
 int Mapa::obterLinhas() const { return linhas;}
 int Mapa::obterColunas() const { return colunas;}
 
+void Mapa::atualizarCaravanas(const vector<Caravana*>& caravanas) {
+    for (const Caravana* caravana : caravanas) {
+            char aux = caravana->obterRepresentacao();
+            definirCelula(caravana->obterLinha(), caravana->obterColuna(), aux);
+    }
+}
+
+void Mapa::atualizarItens(const vector<Item>& itens) {
+    for (const Item& item : itens) {
+        definirCelula(item.obterLinha(), item.obterColuna(), '*');
+    }
+}

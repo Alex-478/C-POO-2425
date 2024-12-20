@@ -4,6 +4,7 @@
 #include "../Caravanas/Caravana.h"
 #include "../Itens/Item.h"
 #include "../Buffer/Buffer.h"
+#include "../Cidade/Cidade.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -12,6 +13,7 @@ class Simulador {
     Mapa mapa;                              // Mapa do deserto
     vector<Caravana*> caravanas;            // Lista de caravanas
     vector<Item> itens;                     // Lista de itens no mapa
+    vector<Cidade*> cidades;
     int moedas;                             // Moedas do jogador
     int instantes;                          // Contador de instantes da simulação
     char** buffer;                          // Buffer 2D para o estado do ecrã
@@ -22,6 +24,11 @@ public:
     Simulador(int linhas, int colunas);
     ~Simulador();
     void carregarConfiguracao(const string& nomeArquivo);
+
+    void criarObjetosInciais();
+
+    void carregarDeArquivo(const string &nomeArquivo);
+
     void executar();
     void gerarItens();
     void aplicarEfeitosItem(Caravana& caravana);

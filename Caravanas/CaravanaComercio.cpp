@@ -1,7 +1,7 @@
 #include "CaravanaComercio.h"
 
-CaravanaComercio::CaravanaComercio(int id, int linha, int coluna)
-    : Caravana(id, "Comercio", linha, coluna) {}
+CaravanaComercio::CaravanaComercio(int linha, int coluna)
+    : Caravana("Comercio", linha, coluna) {}
 
 void CaravanaComercio::mostrarEstado() const {
     cout << "Caravana de Comercio: ";

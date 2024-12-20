@@ -1,10 +1,12 @@
 #ifndef CARAVANA_H
 #define CARAVANA_H
 #include <string>
+#include <iostream>
 using namespace std;
 
 
 class Caravana {
+    static int nID;
     int id;
     int tripulacao; // tripulantes
     int carga;      // carga em toneladas
@@ -14,9 +16,11 @@ class Caravana {
     int coluna;     // Posição na coluna
 
 public:
-    Caravana(int id, const std::string& tipo, int linha, int coluna);
+    Caravana(const string &tipo, int linha, int coluna);
+
     virtual void mostrarEstado() const;      // Exibir estado da caravana (virtual for polymorphism)
     virtual void mover(char direcao);        // Mover a caravana
+    virtual char obterRepresentacao() const;
 
     //sets
     void reduzirTripulacao(int quantidade);  // Reduzir tripulantes
@@ -27,6 +31,7 @@ public:
     int obterLinha() const;                  // Obter linha atual
     int obterColuna() const;                 // Obter coluna atual
     int obterTripulacao() const;             // Obter tripulação
+    int obterID() const;
 
     virtual ~Caravana() {}
 };

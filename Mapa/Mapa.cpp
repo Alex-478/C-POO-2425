@@ -2,6 +2,42 @@
 #include <iostream>
 
 Mapa::Mapa() : linhas(0), colunas(0), tabela(nullptr) {}
+Mapa::Mapa(int l, int c) : linhas(l), colunas(c){
+    tabela = new char*[linhas];
+    for (int i = 0; i < linhas; ++i) {
+        tabela[i] = new char[colunas];
+        memset(tabela[i], '.', colunas);  // Inicializa com valor padrão '.'
+    }
+}
+
+// Construstor copia
+Mapa::Mapa(const Mapa& other) : linhas(other.linhas), colunas(other.colunas) {
+    tabela = new char*[linhas];
+    for (int i = 0; i < linhas; ++i) {
+        tabela[i] = new char[colunas];
+        memcpy(tabela[i], other.tabela[i], colunas);
+    }
+}
+
+Mapa & Mapa::operator=(const Mapa &other) {
+    if (this != &other) {
+        // Deleta os dados antigos
+        for (int i = 0; i < linhas; ++i) {
+            delete[] tabela[i];
+        }
+        delete[] tabela;
+
+        // Copia os novos dados
+        linhas = other.linhas;
+        colunas = other.colunas;
+        tabela = new char*[linhas];
+        for (int i = 0; i < linhas; ++i) {
+            tabela[i] = new char[colunas];
+            memcpy(tabela[i], other.tabela[i], colunas);
+        }
+    }
+    return *this;
+}
 
 Mapa::~Mapa() {
     // Liberta a memória alocada para o mapa
@@ -21,6 +57,7 @@ void Mapa::limpar() {
     }
 }
 
+/*
 void Mapa::carregarDeArquivo(const string& nomeArquivo) {
     ifstream arquivo(nomeArquivo);
     if (!arquivo) {
@@ -71,7 +108,7 @@ void Mapa::carregarDeArquivo(const string& nomeArquivo) {
     }
 
     arquivo.close();
-}
+}*/
 
 void Mapa::exibir() const {
     for (int i = 0; i < linhas; ++i) {

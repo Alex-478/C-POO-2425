@@ -13,12 +13,23 @@ class Simulador {
     Mapa mapa;                              // Mapa do deserto
     vector<Caravana*> caravanas;            // Lista de caravanas
     vector<Item> itens;                     // Lista de itens no mapa
-    vector<Cidade*> cidades;
+    vector<Cidade*> cidades;                // Lista de cidades no mapa
     int moedas;                             // Moedas do jogador
     int instantes;                          // Contador de instantes da simulação
-    char** buffer;                          // Buffer 2D para o estado do ecrã
     int linhas, colunas;                    // Dimensões do mapa e do buffer
-    Buffer buffer2;
+    Buffer buffer2;                         // Buffer 2D para o estado do ecrã
+
+    // Variáveis do ficheiro
+    int moedasIniciais;                     // Moedas iniciais
+    int instantesEntreNovosItens;
+    int duracaoItem;
+    int maxItens;
+    int precoVendaMercadoria;
+    int precoCompraMercadoria;
+    int precoCaravana;
+    int instantesEntreNovosBarbaros;
+    int duracaoBarbaros;
+
 
 public:
     Simulador(int linhas, int colunas);
@@ -36,9 +47,6 @@ public:
     void moverCaravana(int idCaravana, const string& direcao);
     void criarTempestadeAreia(int linha, int coluna, int raio);
 
-    void inicializarBuffer();
-
-    void limparBuffer();                    // Limpa o buffer
     void atualizarMapa();                 // Atualiza o buffer com o estado atual
 };
 

@@ -135,15 +135,21 @@ void Mapa::definirCelula(int linha, int coluna, char valor) {
 int Mapa::obterLinhas() const { return linhas;}
 int Mapa::obterColunas() const { return colunas;}
 
-void Mapa::atualizarCaravanas(const vector<Caravana*>& caravanas) {
-    for (const Caravana* caravana : caravanas) {
-            char aux = caravana->obterRepresentacao();
-            definirCelula(caravana->obterLinha(), caravana->obterColuna(), aux);
+void Mapa::criarTempestadeAreia(int linha, int coluna, int raio) {
+    int auxColuna;
+    int auxLinha;
+    for (int i = linha - raio; i <= linha + raio; ++i) {
+        for (int j = coluna - raio; j <= coluna + raio; ++j) {
+            if (i >= 0 && i < linhas && j >= 0 && j < colunas) {
+                auxLinha = (i + linhas) % linhas; // Considera mapa esférico
+                auxColuna = (j + colunas) % colunas; // Considera mapa esférico
+            }
+        }
     }
-}
+    // Representa a tempestade no mapa, ignorando montanhas
+    if (obterCelula(auxLinha, auxColuna) != '+') {
+        definirCelula(auxLinha, auxColuna, 'T');
+    }
 
-void Mapa::atualizarItens(const vector<Item>& itens) {
-    for (const Item& item : itens) {
-        definirCelula(item.obterLinha(), item.obterColuna(), '*');
-    }
+
 }

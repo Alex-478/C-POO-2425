@@ -1,6 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 #include <string>
+#include <iostream>
 using namespace std;
 enum class TipoItem { CaixaPandora, ArcaTesouro, Jaula, Mina, Surpresa }; // Enum para os tipos de item
 
@@ -17,6 +18,7 @@ public:
     TipoItem obterTipo() const;           // Retorna o tipo do item
     int obterLinha() const;               // Retorna a linha
     int obterColuna() const;              // Retorna a coluna
+    void afetadoPorTempestade();
 };
 
 

@@ -21,7 +21,7 @@ public:
     // Manipulação de caravanas
     void adicionarCaravana(Caravana* caravana);
     void removerCaravana(Caravana* caravana);
-    const std::vector<Caravana*>& obterCaravanas() const;
+    const vector<Caravana*>& obterCaravanas() const;
 
     // Exibir informações da cidade
     void exibirConteudo() const;

@@ -21,11 +21,13 @@ void Buffer::limpar() {
 
 // Update the map information in the buffer
 void Buffer::atualizarBuffer (const Mapa& mapa) {
-    for (int r = 0; r < linhas; ++r) {
-        for (int c = 0; c < colunas; ++c) {
-            buffer[r * colunas + c] = mapa.obterCelula(r, c);  // Copy map information to buffer
+    for (int r = 0; r < mapa.obterLinhas(); ++r) {
+        for (int c = 0; c < mapa.obterColunas(); ++c) {
+            buffer[r * mapa.obterColunas() + c] = mapa.obterCelula(r, c);  // Copy map information to buffer
         }
     }
+
+
 }
 
 
@@ -38,3 +40,4 @@ void Buffer::mostrar() const {
         cout << endl;  // New line after each row
     }
 }
+

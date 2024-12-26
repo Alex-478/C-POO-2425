@@ -1,23 +1,18 @@
 #ifndef MAPA_H
 #define MAPA_H
+
+
 #include <fstream>
 #include <iostream>
 #include <cstring> // Para memset
 #include <string>
 #include <vector>
-#include "../Caravanas/Caravana.h"
-#include "../Caravanas/CaravanaComercio.h"
-#include "../Caravanas/CaravanaMilitar.h"
-#include "../Caravanas/CaravanaSecreta.h"
-#include "../Itens/Item.h"
 
 using namespace std;
 
 class Mapa {
     int linhas, colunas;  // Dimensões do mapa
     char** tabela;        // tabela 2D que armazena o mapa
-
-
 
 public:
     Mapa();
@@ -40,8 +35,7 @@ public:
     int obterColunas() const; // Retorna o número de colunas
     char obterCelula(int linha, int coluna) const; // Retorna o valor de uma célula
 
-    void atualizarCaravanas(const vector<Caravana *> &caravanas);
-    void atualizarItens(const vector<Item> &itens);
+    void criarTempestadeAreia(int linha, int coluna, int raio);
 
 };
 

@@ -26,6 +26,7 @@ public:
    // void atualizarMapa(const vector<vector<char>> &mapGrid, Mapa mapa);
     void atualizarCaravanas(const vector<Caravana*>& caravans);
     void mostrar() const;
+
 };
 
 

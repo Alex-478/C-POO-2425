@@ -68,6 +68,26 @@ public:
 
     string obterDescricaoCaravana(int idCaravana) const;
 
+    void stop(int id);
+
+    void autoGestao(int id);
+
+    string precos() const;
+
+    void alterarMoedas(int quantidade);
+
+    void adicionarCaravanaCidade(Caravana *caravana);
+
+    string obterDescricaoCidade(int idCidade) const;
+
+    void compraMercadoria(int id, int quantidade);
+
+    void venda(int id);
+
+    void compraCaravana(int idCidade, char tipo);
+
+    void verificarInteracaoCidade(Caravana &caravana);
+
     void atualizarMapa();                 // Atualiza o buffer com o estado atual
 };
 

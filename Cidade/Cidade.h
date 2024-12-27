@@ -24,7 +24,9 @@ public:
     const vector<Caravana*>& obterCaravanas() const;
 
     // Exibir informações da cidade
-    void exibirConteudo() const;
+    string exibirConteudo() const;
+
+    void interagirComCaravana(Caravana &caravana);
 };
 
 

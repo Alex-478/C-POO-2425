@@ -1,7 +1,10 @@
 #include "CaravanaComercio.h"
 
 CaravanaComercio::CaravanaComercio(int linha, int coluna)
-    : Caravana("Comercio", linha, coluna) {}
+    : Caravana("Comercio", linha, coluna) {
+    maxAgua = 200;
+    maxCarga = 40;
+}
 
 string CaravanaComercio::mostrarEstado() const {
         ostringstream descricao;
@@ -84,15 +87,6 @@ void CaravanaComercio::afetadaPorTempestade() {
     }
 }
 
-void CaravanaComercio::aumentarCarga(int quantidade) {
-    carga += quantidade;
-    if(carga >= 40) carga = 40;
-}
-
-void CaravanaComercio::aumentarAgua(int quantidade) {
-    agua += quantidade;
-    if (agua >= 200) agua = 200;
-}
 
 void CaravanaComercio::gastarAgua() {
     if(tripulacao >= 20 ) {

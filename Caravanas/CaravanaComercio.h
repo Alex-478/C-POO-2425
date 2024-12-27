@@ -15,9 +15,6 @@ public:
 
     void afetadaPorTempestade() override;
 
-    void aumentarCarga(int quantidade) override;
-
-    void aumentarAgua(int quantidade) override;
 
     void gastarAgua() override;
 };

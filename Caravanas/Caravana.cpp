@@ -2,7 +2,9 @@
 #include <iostream>
 int Caravana::nID = 0;
 Caravana::Caravana(const string& tipo, int linha, int coluna)
-    : id(++nID), tipo(tipo), linha(linha), coluna(coluna), tripulacao(20), carga(0), agua(100), isAutonoma(true), semTripulantes(false) ,instantesRestantes(5) {}
+    : id(++nID), tipo(tipo), linha(linha), coluna(coluna),
+    tripulacao(20), carga(0), agua(100), maxAgua(100), isAutonoma(true),
+    semTripulantes(false) ,instantesRestantes(5), emCidade(false) {}
 
 string Caravana::mostrarEstado() const {
     ostringstream descricao;
@@ -69,10 +71,15 @@ void Caravana::mover(char direcao, int mapaLinhas, int mapaColunas, const Mapa& 
     // Atualiza as coordenadas se o destino for válido
     linha = novaLinha;
     coluna = novaColuna;
+    definirEmCidade(false);
     //Debug
     cout << "Caravana " << id << " moveu para " << direcao
          << " na posicao (" << linha << ", " << coluna << ")" << endl;
 }
+
+//cidade
+bool Caravana::estaEmCidade() const { return emCidade; }
+void Caravana::definirEmCidade(bool estado) { emCidade = estado; }
 
 //Set posiçao
 void Caravana::definirPosicao(int novaLinha, int novaColuna) {
@@ -85,6 +92,8 @@ void Caravana::setEstadoAutonoma(bool estado) {
 }
 
 //gets
+int Caravana::obterCarga() const { return carga; }
+int Caravana::obterCargaMaxima() const { return maxCarga; }
 bool Caravana::obterEstadoAutonoma() const {return isAutonoma;}
 int Caravana::obterLinha() const { return linha; }
 int Caravana::obterColuna() const { return coluna; }
@@ -95,6 +104,7 @@ void Caravana::destruir() {
     agua = 0;
     cout << "Caravana destruída!" << endl;
 }
+
 
 
 bool Caravana::estaSemTripulantes() {
@@ -122,14 +132,23 @@ void Caravana::reduzirCarga(int quantidade) {
     if (carga < 0) carga = 0;
 }
 void Caravana::aumentarCarga(int quantidade) {
+
+    if (carga + quantidade > maxCarga) {
+        cout << "Capacidade de carga insuficiente." << endl;
+        return;
+    }
     carga += quantidade;
-    if(carga >= 40) carga = 40;
+    cout << "Compra realizada com sucesso." << endl;
 }
 void Caravana::reduzirAgua(int quantidade) {
     agua -= quantidade;
     if (agua < 0) agua = 0;
 }
 void Caravana::aumentarAgua(int quantidade) {
+    if (agua + quantidade > maxAgua) {
+        cout << "Capacidade de carga insuficiente." << endl;
+        return;
+    }
     agua += quantidade;
 }
 void Caravana::gastarAgua() {
@@ -137,6 +156,9 @@ void Caravana::gastarAgua() {
     cout << "Caravana " << id << " gastou 1 unidade de água." << endl;
     if (agua < 0) agua = 0;
 
+}
+void Caravana::abastecerAgua() {
+    agua = maxAgua;
 }
 
 int Caravana::obterID() const { return id;}

@@ -28,14 +28,21 @@ const vector<Caravana*>& Cidade::obterCaravanas() const {
 }
 
 // Exibe as informações da cidade
-void Cidade::exibirConteudo() const {
-    cout << "Cidade " << id << " na posição (" << linha << ", " << coluna << "):\n";
+string Cidade::exibirConteudo() const {
+    ostringstream descricao;
+    descricao << "Cidade " << id << " na posicao (" << linha << ", " << coluna << "):\n";
     if (caravanas.empty()) {
-        cout << "  Sem caravanas presentes.\n";
+        descricao << "  Sem caravanas presentes.\n";
     } else {
-        cout << "  Caravanas presentes:\n";
+        descricao << "  Caravanas presentes:\n";
         for (const auto* caravana : caravanas) {
-            cout << "    - ID: " << caravana->obterID() << "\n";
+            descricao << "    - ID: " << caravana->obterID() << "\n";
         }
     }
+    return descricao.str();
+}
+
+void Cidade::interagirComCaravana(Caravana& caravana) {
+    std::cout << "Bem-vindo à cidade " << id << "!" << std::endl;
+    // Exemplo: interagir com recursos ou realizar comércio
 }

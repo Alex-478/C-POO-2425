@@ -3,6 +3,8 @@
 CaravanaMilitar::CaravanaMilitar(int linha, int coluna)
     : Caravana("Militar", linha, coluna) {
     tripulacao = 0;
+    maxAgua = 400;
+    maxCarga = 5;
 }
 
 string CaravanaMilitar::mostrarEstado() const {
@@ -32,16 +34,6 @@ void CaravanaMilitar::afetadaPorTempestade() {
         destruir();
         cout << "Caravana Militar " << id << " foi destruída pela tempestade!" << endl;
     }
-}
-
-void CaravanaMilitar::aumentarCarga(int quantidade) {
-    carga += quantidade;
-    if(carga >= 5) carga = 5;
-}
-
-void CaravanaMilitar::aumentarAgua(int quantidade) {
-    agua += quantidade;
-    if(agua >= 400) agua = 400;
 }
 
 void CaravanaMilitar::gastarAgua() {

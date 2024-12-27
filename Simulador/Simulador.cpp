@@ -23,50 +23,18 @@ Simulador::~Simulador() {
 }
 
 void Simulador::atualizarMapa() {
-
-        for (const Caravana* caravana : caravanas) {
-            char aux = caravana->obterRepresentacao();
-            mapa.definirCelula(caravana->obterLinha(), caravana->obterColuna(), aux);
-        }
-
-        for (const Item& item : itens) {
-            mapa.definirCelula(item.obterLinha(), item.obterColuna(), '*');
-        }
-
-
-    /*
-    for (const Caravana* caravana : caravanas) {
-        //buffer[caravana->obterLinha()][caravana->obterColuna()] = 'C';
-        mapa.definirCelula(caravana->obterLinha(),caravana->obterColuna(),'C');
+    for (const Caravana *caravana: caravanas) {
+        char aux = caravana->obterRepresentacao();
+        mapa.definirCelula(caravana->obterLinha(), caravana->obterColuna(), aux);
     }
 
-    // Adiciona itens ao buffer
-    for (const Item& item : itens) {
-        //buffer[item.obterLinha()][item.obterColuna()] = '*';
-        mapa.definirCelula(item.obterLinha(),item.obterColuna(),'*');
-    }
-    */
-
-
-    //limparBuffer();
-    // Adiciona o mapa ao buffer
-    /*for (int l = 0; l < mapa.obterLinhas(); ++l) {
-        for (int c = 0; c < mapa.obterColunas(); ++c) {
-            buffer[l][c] = mapa.obterCelula(l, c);
-        }
-    }*/
-
-    /*
-    // Adiciona caravanas ao buffer
-    for (const Caravana* caravana : caravanas) {
-        buffer[caravana->obterLinha()][caravana->obterColuna()] = 'C';
+    for (const Item &item: itens) {
+        mapa.definirCelula(item.obterLinha(), item.obterColuna(), '*');
     }
 
-    // Adiciona itens ao buffer
-    for (const Item& item : itens) {
-        buffer[item.obterLinha()][item.obterColuna()] = '*';
+    for (const Cidade *cidade: cidades) {
+        mapa.definirCelula(cidade->obterLinha(), cidade->obterColuna(), cidade->obterID());
     }
-    */
 }
 
 void Simulador::gerarItens() {
@@ -104,7 +72,7 @@ void Simulador::verificarCaravanasExpiradas() {
 
             if (caravana->deveDesaparecer()) {
                 // Remove a caravana do vetor
-                cout << "Removendo caravana sem tripulantes." << std::endl;
+                cout << "Removendo caravana sem tripulantes." << endl;
                 it = caravanas.erase(it);
                 delete caravana; // Libera a memória da caravana removida
             } else {
@@ -126,6 +94,7 @@ void Simulador::moverCaravanaAutonomo() {
         int colunaAtual = caravana->obterColuna();
         mapa.definirCelula(linhaAtual, colunaAtual, '.');
         caravana->moverAutonomo(linhas, colunas, caravanas, itens, mapa);
+        adicionarCaravanaCidade(caravana);
     }
 }
 
@@ -138,6 +107,7 @@ void Simulador::moverCaravana(int idCaravana, const char direcao) {
             int colunaAtual = caravana->obterColuna();
             mapa.definirCelula(linhaAtual, colunaAtual, '.');
             caravana->mover(direcao, linhas , colunas, mapa);
+            adicionarCaravanaCidade(caravana);
         }
     }
 }
@@ -202,6 +172,159 @@ string Simulador::obterDescricaoCaravana(int idCaravana) const {
     return "Caravana com ID " + to_string(idCaravana) + " não encontrada.";
 }
 
+void Simulador::stop(int id) {
+    for (Caravana* caravana : caravanas) {
+        if(caravana->obterID() == id)
+        caravana->setEstadoAutonoma(false);
+    }
+}
+void Simulador::autoGestao(int id) {
+    for (Caravana* caravana : caravanas) {
+        if(caravana->obterID() == id)
+            caravana->setEstadoAutonoma(false);
+    }
+}
+
+string Simulador::precos() const {
+    ostringstream descricao;
+    descricao << "Preço Compra caravana: " << precoCaravana << endl;
+    descricao << "Preço Compra Mercadoria: " << precoCompraMercadoria << endl;
+    descricao << "Preço Venda Mercadoria: " << precoVendaMercadoria << endl;
+    return descricao.str();
+}
+
+void Simulador::alterarMoedas(int quantidade) {
+    moedas += quantidade;
+}
+
+//Cidade
+void Simulador::adicionarCaravanaCidade(Caravana* caravana) {
+    if (caravana->estaEmCidade()) {
+        // A caravana já está em uma cidade, não faz nada
+        return;
+    }
+    for (auto& cidade : cidades) {
+        // Verifica se as coordenadas da caravana coincidem com as da cidade
+        if (caravana->obterLinha() == cidade->obterLinha() &&
+            caravana->obterColuna() == cidade->obterColuna()) {
+            caravana->definirEmCidade(true);
+            caravana->abastecerAgua();
+            cidade->adicionarCaravana(caravana);
+            cout << "Caravana " << caravana->obterID()
+                      << " foi adicionada a cidade " << cidade->obterID() << "." << endl;
+
+
+            return;
+            }
+    }
+}
+string Simulador::obterDescricaoCidade(int idCidade) const {
+    // Percorre todas as cidades
+    for (const Cidade *cidade: cidades) {
+        if (cidade->obterID() == idCidade) { // Verifica se o ID corresponde
+            return cidade->exibirConteudo(); // Retorna a descrição da caravana
+        }
+    }
+
+    // Caso não encontre a caravana com o ID especificado
+    return "Cidade com ID " + to_string(idCidade) + " não encontrada.";
+}
+void Simulador::compraMercadoria(int id, int quantidade) {
+        if (quantidade <= 0) {
+            std::cout << "Quantidade inválida." << std::endl;
+            return;
+        }
+        for (Caravana* caravana : caravanas) {
+            if (caravana->obterID() == id) { // Verifica se o ID corresponde
+                if(!caravana->estaEmCidade()) {
+                    cout << "Caravana nao esta numa cidade." << endl;
+                    return;
+                }
+
+                int custo = quantidade * precoCompraMercadoria;
+
+                if (moedas < custo) {
+                    cout << "Moedas insuficientes." << endl;
+                    return;
+                }
+
+                if (caravana->obterCarga() + quantidade > caravana->obterCargaMaxima()) {
+                    cout << "Capacidade de carga insuficiente." << endl;
+                    return;
+                }
+
+                moedas -= custo;
+                caravana->aumentarCarga(quantidade);
+                cout << "Compra realizada com sucesso." << endl;
+                return;
+            }
+        }
+        cout << "Caravana " << id << " não encontrada." << endl;
+        return;
+}
+void Simulador::venda(int id) {
+    for (Caravana* caravana : caravanas) {
+        if (caravana->obterID() == id) { // Verifica se o ID corresponde
+            if(!caravana->estaEmCidade()) {
+                cout << "Caravana nao esta numa cidade." << endl;
+                return;
+            }
+
+            moedas += caravana->obterCarga() * precoVendaMercadoria;
+            caravana->reduzirCarga(caravana->obterCarga());
+
+            cout << "Venda realizada com sucesso." << endl;
+            return;
+        }
+    }
+    cout << "Caravana " << id << " não encontrada." << endl;
+}
+void Simulador::compraCaravana(int idCidade, char tipo) {
+    if (tipo != 'C' && tipo != 'M' && tipo != 'S') {
+        cout << "Tipo de caravana inválido. Use 'C', 'M' ou 'S'." << endl;
+        return;
+    }
+    if (moedas < precoCaravana) {
+        cout << "Moedas insuficientes. Necessário: " << precoCaravana
+             << ", Disponível: " << moedas << endl;
+        return;
+    }
+    int contagemCaravanas = caravanas.size();
+
+    if(contagemCaravanas >= 10) {
+        cout << "Numero de caravanas maximo atingido" << 10 << endl;
+        return;
+    }
+
+    Caravana* novaCaravana = nullptr; // Ponteiro para a nova caravana criada
+
+    for (auto& cidade : cidades) {
+        if (cidade->obterID() == idCidade) {
+            if (tipo == 'C')
+                novaCaravana = new CaravanaComercio(cidade->obterLinha(), cidade->obterColuna());
+            else if (tipo == 'M')
+                novaCaravana = new CaravanaMilitar(cidade->obterLinha(), cidade->obterColuna());
+            else if (tipo == 'S')
+                novaCaravana = new CaravanaSecreta(cidade->obterLinha(), cidade->obterColuna());
+        }
+    }
+
+    if (novaCaravana) {
+        caravanas.push_back(novaCaravana); // Adiciona a caravana ao vetor
+        moedas -= precoCaravana;
+        cout << "Caravana " << novaCaravana->obterID() << " criada com sucesso em ("
+             << novaCaravana->obterLinha() << "," << novaCaravana->obterColuna() << ")" << endl;
+    }
+}
+//////////
+void Simulador::verificarInteracaoCidade(Caravana& caravana) {
+    for (const auto& cidade : cidades) {
+        if (caravana.obterLinha() == cidade->obterLinha() &&
+            caravana.obterColuna() == cidade->obterColuna()) {
+            cidade->interagirComCaravana(caravana);
+            }
+    }
+}
 
 //1-Inciar Config
 void Simulador::carregarConfiguracao(const string& nomeFicheiro) {
@@ -287,7 +410,7 @@ void Simulador::carregarDeArquivo(const string& nomeArquivo) {
 }
 //3-Executar
 void Simulador::executar() {
-    atualizarMapa();
+
     buffer2.atualizarBuffer(mapa);
     buffer2.mostrar();
 
@@ -318,10 +441,10 @@ void Simulador::execInstantes(int auxInstantes) {
         buffer2.atualizarBuffer(mapa);
         buffer2.mostrar();
 
-        // Exibe estado das caravanas
+      /*  // Exibe estado das caravanas
         for (const Caravana* caravana : caravanas) {
             cout << caravana->mostrarEstado();
-        }
+        }*/
         cout << "Moedas: " << moedas << " | Instantes: " << instantes << endl;
 
         ////////////////////////////////
@@ -337,7 +460,6 @@ void Simulador::execInstantes(int auxInstantes) {
         moverCaravanaAutonomo();
         //Caravanas todas para autonomas
         for (Caravana* caravana : caravanas) {
-            caravana->setEstadoAutonoma(true);
             caravana->gastarAgua(); // gastar agua conforme cada tipo de caravana
         }
         verificarCaravanasExpiradas();
@@ -348,16 +470,16 @@ void Simulador::execInstantes(int auxInstantes) {
 }
 //5-Ler Comandos
 void Simulador::lerComandos(const string& comando) {
-    std::istringstream ss(comando);
-    std::string cmd;
+    istringstream ss(comando);
+    string cmd;
     ss >> cmd;
 
     if (cmd == "config") {
-        std::string filename;
+        string filename;
         ss >> filename;
         carregarConfiguracao(filename);
     } else if (cmd == "exec") {
-        std::string filename;
+        string filename;
         ss >> filename;
         executar();
     } else if (cmd == "prox") {
@@ -368,13 +490,13 @@ void Simulador::lerComandos(const string& comando) {
         char cidade;
         char tipo;
         ss >> cidade >> tipo;
-        //comprac(cidade, tipo);
+        //compra(cidade, tipo);
     } else if (cmd == "precos") {
-        //precos();
+        cout << precos();
     } else if (cmd == "cidade") {
-        char nome;
-        ss >> nome;
-        //cidade(nome);
+        char idC;
+        ss >> idC;
+        cout << obterDescricaoCidade(idC);
     } else if (cmd == "caravana") {
         int id;
         if (ss >> id) {
@@ -389,11 +511,11 @@ void Simulador::lerComandos(const string& comando) {
     } else if (cmd == "compra") {
         int id, quantidade;
         ss >> id >> quantidade;
-        //compra(id, quantidade);
+        compraMercadoria(id, quantidade);
     } else if (cmd == "vende") {
         int id;
         ss >> id;
-        //vende(id);
+        venda(id);
     } else if (cmd == "move") {
         int idCaravana;
         char direcao;
@@ -404,11 +526,11 @@ void Simulador::lerComandos(const string& comando) {
     } else if (cmd == "auto") {
         int id;
         ss >> id;
-        //autoGestao(id);
+        autoGestao(id);
     } else if (cmd == "stop") {
         int id;
         ss >> id;
-        //stop(id);
+        stop(id);
     } else if (cmd == "barbaro") {
         int x, y;
         ss >> x >> y;
@@ -421,29 +543,29 @@ void Simulador::lerComandos(const string& comando) {
     } else if (cmd == "moedas") {
         int quantidade;
         ss >> quantidade;
-        //adicionarMoedas(quantidade);
+        alterarMoedas(quantidade);
     } else if (cmd == "tripul") {
         int id, quantidade;
         ss >> id >> quantidade;
         //tripul(id, quantidade);
     } else if (cmd == "saves") {
-        std::string nome;
+        string nome;
         ss >> nome;
         //saves(nome);
     } else if (cmd == "loads") {
-        std::string nome;
+        string nome;
         ss >> nome;
         //loads(nome);
     } else if (cmd == "lists") {
         //lists();
     } else if (cmd == "dels") {
-        std::string nome;
+        string nome;
         ss >> nome;
         //dels(nome);
     } else if (cmd == "terminar") {
         //terminar();
     } else {
-        std::cout << "Comando desconhecido: " << cmd << std::endl;
+        cout << "Comando desconhecido: " << cmd << endl;
     }
 
     //if (comando == "gerar_itens") {gerarItens();}

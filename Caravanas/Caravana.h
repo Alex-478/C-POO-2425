@@ -15,13 +15,17 @@ protected:
     int id;
     int tripulacao; // tripulantes
     int carga;      // carga em toneladas
+    int maxCarga;
     int agua;       // água disponível
+    int maxAgua;
     string tipo;
     int linha;      // Posição na linha
     int coluna;     // Posição na coluna
     bool isAutonoma;
     bool semTripulantes; // Indica se a caravana está sem tripulantes
     int instantesRestantes; // Contador de instantes antes de desaparecer
+    bool emCidade; // Indica se a caravana já está em uma cidade
+
 public:
     Caravana(const string &tipo, int linha, int coluna);
 
@@ -37,15 +41,19 @@ public:
                                 const vector<Item>& itens, const Mapa &mapa);
     virtual void mover(char direcao, int mapaLinhas, int mapaColunas, const Mapa &mapa);         // Mover a caravana
 
+    bool estaEmCidade() const;  //cidade
+    void definirEmCidade(bool estado);
 
     void reduzirTripulacao(int quantidade);  // Reduzir tripulantes
     void aumentarTripulacao(int quantidade); // Aumentar tripulantes
     void reduzirCarga(int quantidade);       // Reduzir carga
-    virtual void aumentarCarga(int quantidade);     // Aumentar carga
+    void aumentarCarga(int quantidade);     // Aumentar carga
     void reduzirAgua(int quantidade);
-    virtual void aumentarAgua(int quantidade);
+    void aumentarAgua(int quantidade);
 
     virtual void gastarAgua();
+
+    void abastecerAgua();
 
     void destruir();// Destruir caravana
 
@@ -55,6 +63,9 @@ public:
     //sets
     void definirPosicao(int linha, int coluna); // Definir nova posição
     void setEstadoAutonoma(bool estado);
+
+    int obterCarga() const;
+    int obterCargaMaxima() const;
 
     //gets
     int obterLinha() const;                  // Obter linha atual

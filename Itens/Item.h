@@ -11,7 +11,9 @@ class Item {
     int duracao;            // Duração do item no mapa
 
 public:
-    Item(int linha, int coluna, TipoItem tipo, int duracao); // Construtor
+    //Item(int linha, int coluna, TipoItem tipo, int duracao); // Construtor
+    Item(int linha, int coluna, int duracao);
+
     void reduzirDuracao();                // Reduz a duração do item
     bool expirado() const;                // Verifica se o item expirou
     //gets
@@ -19,6 +21,8 @@ public:
     int obterLinha() const;               // Retorna a linha
     int obterColuna() const;              // Retorna a coluna
     void afetadoPorTempestade();
+
+    TipoItem gerarTipoAleatorio();
 };
 
 

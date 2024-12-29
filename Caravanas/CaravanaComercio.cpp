@@ -21,13 +21,13 @@ void CaravanaComercio::mover(char direcao, int mapaLinhas, int mapaColunas, cons
     //cout << "Caravana de Comercio moveu-se com foco no transporte." << endl;
 }
 
-void CaravanaComercio::moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana*>& caravanas, const vector<Item>& itens, const Mapa &mapa) {
+void CaravanaComercio::moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana *> &caravanas, const vector<Item *> &itens, const Mapa &mapa) {
      int destinoRow = -1, destinoCol = -1;
 
     // 1. Verificar itens próximos
-    for (const Item& item : itens) {
-        int itemRow = item.obterLinha();
-        int itemCol = item.obterColuna();
+    for (const Item* item : itens) {
+        int itemRow = item->obterLinha();
+        int itemCol = item->obterColuna();
 
         // Verifica se o item está dentro da distância de 2 células
         if (std::abs(itemRow - linha) <= 2 && std::abs(itemCol - coluna) <= 2) {
@@ -46,7 +46,7 @@ void CaravanaComercio::moverAutonomo(int mapaLinhas, int mapaColunas, const vect
             int outraCol = outraCaravana->obterColuna();
 
             // Verifica se está a mais de 1 célula de distância
-            if (std::abs(outraRow - linha) > 1 || std::abs(outraCol - coluna) > 1) {
+            if (abs(outraRow - linha) > 1 || abs(outraCol - coluna) > 1) {
                 destinoRow = outraRow;
                 destinoCol = outraCol;
                 break;
@@ -61,8 +61,9 @@ void CaravanaComercio::moverAutonomo(int mapaLinhas, int mapaColunas, const vect
 
         if (coluna < destinoCol) mover( 'D', mapaLinhas, mapaColunas, mapa); //coluna--
         else if (coluna > destinoCol) mover( 'E', mapaLinhas, mapaColunas, mapa); //coluna++
-
-        std::cout << "Caravana de Comercio moveu-se para (" << linha << ", " << coluna << ")\n";
+        ostringstream logs;
+        logs << "Caravana de Comercio moveu-se para (" << linha << ", " << coluna << ")\n";
+        logDetalhado(logs.str());
     } else {
         Caravana::moverAutonomo(mapaLinhas, mapaColunas, caravanas, itens, mapa);
     }
@@ -74,7 +75,7 @@ void CaravanaComercio::afetadaPorTempestade() {
     if (rand() % 2 == 0 && carga > 20 ) {
         // 50% de chance de destruição se a carga for maior que 20(metade)
         destruir();
-        cout << "Caravana " << id << " foi destruída pela tempestade!" << endl;
+        cout << "Caravana " << id << " foi destruida pela tempestade!" << endl;
     }
     if(rand() % 4 == 0 && carga > 10) {
         // 25% de chance de destruição se a carga for maior que 10

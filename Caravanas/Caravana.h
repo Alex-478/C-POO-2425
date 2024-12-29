@@ -25,7 +25,7 @@ protected:
     bool semTripulantes; // Indica se a caravana está sem tripulantes
     int instantesRestantes; // Contador de instantes antes de desaparecer
     bool emCidade; // Indica se a caravana já está em uma cidade
-
+    bool modoDetalhado;
 public:
     Caravana(const string &tipo, int linha, int coluna);
 
@@ -35,10 +35,16 @@ public:
     virtual void afetadaPorTempestade();
 
     void atualizarEstadoSemTripulantes(int linhas, int colunas, const vector<Caravana *> &caravanas,
-                                       const vector<Item> &itens, const Mapa &mapa);
+                                       const vector<Item *> &itens, const Mapa &mapa);
 
-    virtual void moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana*>& caravanas,
-                                const vector<Item>& itens, const Mapa &mapa);
+    void logDetalhado(const std::string &mensagem);
+
+    void setModoDetalhado(bool estado);
+
+    bool obterModoDetalhado() const;
+
+    virtual void moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana *> &caravanas,
+                               const vector<Item *> &itens, const Mapa &mapa);
     virtual void mover(char direcao, int mapaLinhas, int mapaColunas, const Mapa &mapa);         // Mover a caravana
 
     bool estaEmCidade() const;  //cidade

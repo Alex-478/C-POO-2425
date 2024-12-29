@@ -21,4 +21,7 @@ add_executable(TPv2 main.cpp
         Simulador/Simulador.cpp
         Simulador/Simulador.h
         Cidade/Cidade.cpp
-        Cidade/Cidade.h)
+        Cidade/Cidade.h
+        Caravanas/CaravanaBarbara.cpp
+        Caravanas/CaravanaBarbara.h
+)

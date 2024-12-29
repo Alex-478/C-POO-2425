@@ -4,7 +4,8 @@ int Caravana::nID = 0;
 Caravana::Caravana(const string& tipo, int linha, int coluna)
     : id(++nID), tipo(tipo), linha(linha), coluna(coluna),
     tripulacao(20), carga(0), agua(100), maxAgua(100), isAutonoma(true),
-    semTripulantes(false) ,instantesRestantes(5), emCidade(false) {}
+    semTripulantes(false) ,instantesRestantes(5), emCidade(false),
+    modoDetalhado(false){}
 
 string Caravana::mostrarEstado() const {
     ostringstream descricao;
@@ -17,7 +18,7 @@ string Caravana::mostrarEstado() const {
     return descricao.str(); // Retorna a descrição da caravana
 }
 
-void Caravana::moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana*>& caravanas, const vector<Item>& itens, const Mapa &mapa) {
+void Caravana::moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana*>& caravanas, const vector<Item*>& itens, const Mapa &mapa) {
     if (isAutonoma) {
         int direcao = rand() % 4;
         switch (direcao) {
@@ -38,7 +39,11 @@ void Caravana::moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Carav
         }
     }
 }
+
+
+
 void Caravana::mover(char direcao, int mapaLinhas, int mapaColunas, const Mapa& mapa) {
+    ostringstream descricao;
     // Coordenadas temporárias para o destino
     int novaLinha = linha;
     int novaColuna = coluna;
@@ -64,7 +69,8 @@ void Caravana::mover(char direcao, int mapaLinhas, int mapaColunas, const Mapa& 
 
     // Verifica se a célula de destino é uma montanha
     if (mapa.obterCelula(novaLinha, novaColuna) == '+') {
-        cout << "Caravana " << id << " não pode mover para uma montanha!" << endl;
+        descricao << "Caravana " << id << " nao pode mover para uma montanha!" << endl;
+        logDetalhado(descricao.str());
         return;
     }
 
@@ -73,8 +79,10 @@ void Caravana::mover(char direcao, int mapaLinhas, int mapaColunas, const Mapa& 
     coluna = novaColuna;
     definirEmCidade(false);
     //Debug
-    cout << "Caravana " << id << " moveu para " << direcao
+
+    descricao << "Caravana " << id << " moveu para " << direcao
          << " na posicao (" << linha << ", " << coluna << ")" << endl;
+    logDetalhado(descricao.str());
 }
 
 //cidade
@@ -185,7 +193,7 @@ void Caravana::afetadaPorTempestade() {
     }
 }
 
-void Caravana::atualizarEstadoSemTripulantes(int linhas, int colunas, const vector<Caravana*>& caravanas, const vector<Item>& itens, const Mapa &mapa) {
+void Caravana::atualizarEstadoSemTripulantes(int linhas, int colunas, const vector<Caravana*>& caravanas, const vector<Item*>& itens, const Mapa &mapa) {
     if (semTripulantes) {
         moverAutonomo(linhas, colunas, caravanas, itens, mapa);
         instantesRestantes--;
@@ -194,4 +202,16 @@ void Caravana::atualizarEstadoSemTripulantes(int linhas, int colunas, const vect
                       << ", " << coluna << ") desapareceu." << std::endl;
         }
     }
+}
+
+void Caravana::logDetalhado(const string& mensagem) {
+    if (modoDetalhado) {
+        cout << "[LOG]: " << mensagem;
+    }
+}
+void Caravana::setModoDetalhado(bool estado) {
+    modoDetalhado = estado;
+}
+bool Caravana::obterModoDetalhado() const {
+    return modoDetalhado;
 }

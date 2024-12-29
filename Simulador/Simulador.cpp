@@ -7,6 +7,8 @@
 #include <ctime>
 #include <cstring> // Para memset
 
+#include "../Caravanas/CaravanaBarbara.h"
+
 Simulador::Simulador(int l, int c)
     : linhas(l), colunas(c), buffer2(linhas, colunas), moedas(1000), instantes(0) {
     srand(time(nullptr)); // Semente para aleatoriedade
@@ -20,6 +22,9 @@ Simulador::~Simulador() {
     for(Cidade* cidade : cidades){
         delete cidade;
     }
+    for(Item* item : itens){
+        delete item;
+    }
 }
 
 void Simulador::atualizarMapa() {
@@ -28,8 +33,8 @@ void Simulador::atualizarMapa() {
         mapa.definirCelula(caravana->obterLinha(), caravana->obterColuna(), aux);
     }
 
-    for (const Item &item: itens) {
-        mapa.definirCelula(item.obterLinha(), item.obterColuna(), '*');
+    for (const Item *item: itens) {
+        mapa.definirCelula(item->obterLinha(), item->obterColuna(), '*');
     }
 
     for (const Cidade *cidade: cidades) {
@@ -44,18 +49,18 @@ void Simulador::gerarItens() {
     int coluna = rand() % colunas;
 
     if (mapa.obterCelula(linha, coluna) == '.') {
-        itens.emplace_back(linha, coluna, TipoItem::ArcaTesouro, 20);
+        itens.push_back(new Item(linha, coluna, 20));
         mapa.definirCelula(linha, coluna, '*');
         cout << "Debug: Item gerado na posição (" << linha << ", " << coluna << ")" << endl;
     }
 }
 void Simulador::verificarItensExpirados() {
     for (auto it = itens.begin(); it != itens.end(); ) {
-        if (it->expirado()) { // Verifica se o item expirou
-            cout << "Item na posição (" << it->obterLinha() << ", " << it->obterColuna()
+        if ((*it)->expirado()) { // Verifica se o item expirou
+            cout << "Item na posição (" << (*it)->obterLinha() << ", " << (*it)->obterColuna()
                  << ") expirou e será removido." << endl;
             // Remove o item do mapa (se necessário)
-            mapa.definirCelula(it->obterLinha(), it->obterColuna(), '.');
+            mapa.definirCelula((*it)->obterLinha(), (*it)->obterColuna(), '.');
             // Remove o item do vetor
             it = itens.erase(it);
         } else {
@@ -136,9 +141,9 @@ void Simulador::criarTempestadeAreia(int linha, int coluna, int raio) {
             }
 
             // 3. Afeta itens na área da tempestade
-            for (Item& item : itens) {
-                if (item.obterLinha() == linhaAjustada && item.obterColuna() == colunaAjustada) {
-                    item.afetadoPorTempestade(); // Metodo para aplicar os efeitos nos itens
+            for (Item* item : itens) {
+                if (item->obterLinha() == linhaAjustada && item->obterColuna() == colunaAjustada) {
+                    item->afetadoPorTempestade(); // Metodo para aplicar os efeitos nos itens
                 }
             }
         }
@@ -195,6 +200,11 @@ string Simulador::precos() const {
 
 void Simulador::alterarMoedas(int quantidade) {
     moedas += quantidade;
+}
+void Simulador::logs() {
+    for (Caravana* caravana : caravanas) {
+        caravana->setModoDetalhado(!caravana->obterModoDetalhado()); // Alterna entre true e false
+    }
 }
 
 //Cidade
@@ -335,9 +345,9 @@ void Simulador::carregarConfiguracao(const string& nomeFicheiro) {
     buffer2 = Buffer(linhas, colunas);
 
     // Exemplo de criação inicial de caravanas
-    caravanas.push_back(new CaravanaComercio(0, 0));
-    caravanas.push_back(new CaravanaMilitar(1, 1));
-    caravanas.push_back(new CaravanaSecreta( 2, 2));
+    //caravanas.push_back(new CaravanaComercio(0, 0));
+    //caravanas.push_back(new CaravanaMilitar(1, 1));
+    //caravanas.push_back(new CaravanaSecreta( 2, 2));
 }
 //2-Le ficheiro
 void Simulador::carregarDeArquivo(const string& nomeArquivo) {
@@ -363,11 +373,16 @@ void Simulador::carregarDeArquivo(const string& nomeArquivo) {
 
             if (caracter >= '0' && caracter <= '9') {
                 // Cria uma caravana comercial
-                caravanas.push_back(new CaravanaComercio( i, j));
-                cout << "Caravana Comercial criada na posicao (" << i << ", " << j << ")\n";
+                if(rand() % 2 == 0){
+                    caravanas.push_back(new CaravanaComercio( i, j));
+                    cout << "Caravana Comercial criada na posicao (" << i << ", " << j << ")\n";
+                } else {
+                    caravanas.push_back(new CaravanaMilitar( i, j));
+                    cout << "Caravana Militar criada na posicao (" << i << ", " << j << ")\n";
+                }
             } else if (caracter == '!') {
                 // Cria uma caravana bárbara
-                caravanas.push_back(new CaravanaMilitar( i, j));
+                caravanas.push_back(new CaravanaBarbara( i, j));
                 cout << "Caravana Barbara criada na posicao (" << i << ", " << j << ")\n";
             } else if (caracter >= 'a' && caracter <= 'z') {
                 // Cria uma cidade
@@ -375,7 +390,7 @@ void Simulador::carregarDeArquivo(const string& nomeArquivo) {
                 cout << "Cidade criada na posicao (" << i << ", " << j << ")\n";
             } else if (caracter == '*') {
                 // Cria um item
-                //itens.push_back(new Item(r, c, ItemType::Surpresa, 20));
+                itens.push_back(new Item(i, j, 20));
                 cout << "Item criado na posicao (" << i << ", " << j << ")\n";
             }
 
@@ -410,7 +425,7 @@ void Simulador::carregarDeArquivo(const string& nomeArquivo) {
 }
 //3-Executar
 void Simulador::executar() {
-
+    atualizarMapa();
     buffer2.atualizarBuffer(mapa);
     buffer2.mostrar();
 
@@ -432,27 +447,19 @@ void Simulador::execInstantes(int auxInstantes) {
 
     string comando;
     for (int i = 0; i < auxInstantes; ++i) {
-        // Inicialização correta
-        //atualizarBuffer();
-        atualizarMapa();
-
-        //limparBuffer();
-        buffer2.limpar();
-        buffer2.atualizarBuffer(mapa);
-        buffer2.mostrar();
 
       /*  // Exibe estado das caravanas
         for (const Caravana* caravana : caravanas) {
             cout << caravana->mostrarEstado();
         }*/
-        cout << "Moedas: " << moedas << " | Instantes: " << instantes << endl;
+
 
         ////////////////////////////////
 
         //Verificações dos objetos em cada instante
         //Reduzir uma duração dos itens
-        for (Item item : itens) {
-            item.reduzirDuracao();
+        for (Item* item : itens) {
+            item->reduzirDuracao();
         }
         verificarItensExpirados();
 
@@ -461,9 +468,23 @@ void Simulador::execInstantes(int auxInstantes) {
         //Caravanas todas para autonomas
         for (Caravana* caravana : caravanas) {
             caravana->gastarAgua(); // gastar agua conforme cada tipo de caravana
+
+            //fazer outro ciclo de caravana e verificar se tem alguma adjacente
+            //se tiver adjacente fazer combate
+            //para as caravanas nao barbaras, verificar sem tem alguma barbara.
+
         }
         verificarCaravanasExpiradas();
 
+
+        //BUFFER E MAPA
+        //atualizarBuffer();
+        atualizarMapa();
+        //limparBuffer();
+        buffer2.limpar();
+        buffer2.atualizarBuffer(mapa);
+        buffer2.mostrar();
+        cout << "Moedas: " << moedas << " | Instantes: " << instantes << endl;
         ++instantes;
     }
 
@@ -490,7 +511,7 @@ void Simulador::lerComandos(const string& comando) {
         char cidade;
         char tipo;
         ss >> cidade >> tipo;
-        //compra(cidade, tipo);
+        compraCaravana(cidade, tipo);
     } else if (cmd == "precos") {
         cout << precos();
     } else if (cmd == "cidade") {
@@ -564,7 +585,9 @@ void Simulador::lerComandos(const string& comando) {
         //dels(nome);
     } else if (cmd == "terminar") {
         //terminar();
-    } else {
+    } else if (cmd == "logs") {
+        logs();
+    }else {
         cout << "Comando desconhecido: " << cmd << endl;
     }
 

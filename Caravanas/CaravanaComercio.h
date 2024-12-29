@@ -11,7 +11,7 @@ public:
 
     string mostrarEstado() const override; // Substitui mostrarEstado
     void mover(char direcao, int mapaLinhas, int mapaColunas, const Mapa &mapa) override;   // Substitui mover
-    void moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana *> &caravanas, const vector<Item> &itens, const Mapa &mapa) override;
+    void moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana *> &caravanas, const vector<Item *> &itens, const Mapa &mapa) override;
 
     void afetadaPorTempestade() override;
 

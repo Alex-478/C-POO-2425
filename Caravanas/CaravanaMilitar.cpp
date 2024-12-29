@@ -20,7 +20,7 @@ void CaravanaMilitar::mover(char direcao, int mapaLinhas, int mapaColunas, const
 }
 
 char CaravanaMilitar::obterRepresentacao() const {
-    return '!'; // Retorna '!' para caravanas bárbaras
+    return id + '0'; // Retorna '!' para caravanas bárbaras
 }
 
 void CaravanaMilitar::afetadaPorTempestade() {

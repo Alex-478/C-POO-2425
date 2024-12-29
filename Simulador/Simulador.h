@@ -5,6 +5,7 @@
 #include "../Caravanas/CaravanaComercio.h"
 #include "../Caravanas/CaravanaMilitar.h"
 #include "../Caravanas/CaravanaSecreta.h"
+#include "../Caravanas/CaravanaBarbara.h"
 #include "../Itens/Item.h"
 #include "../Buffer/Buffer.h"
 #include "../Cidade/Cidade.h"
@@ -18,7 +19,7 @@ using namespace std;
 class Simulador {
     Mapa mapa;                              // Mapa do deserto
     vector<Caravana*> caravanas;            // Lista de caravanas
-    vector<Item> itens;                     // Lista de itens no mapa
+    vector<Item*> itens;                     // Lista de itens no mapa
     vector<Cidade*> cidades;                // Lista de cidades no mapa
     int moedas;                             // Moedas do jogador
     int instantes;                          // Contador de instantes da simulação
@@ -75,6 +76,8 @@ public:
     string precos() const;
 
     void alterarMoedas(int quantidade);
+
+    void logs();
 
     void adicionarCaravanaCidade(Caravana *caravana);
 

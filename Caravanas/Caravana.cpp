@@ -5,7 +5,7 @@ Caravana::Caravana(const string& tipo, int linha, int coluna)
     : id(++nID), tipo(tipo), linha(linha), coluna(coluna),
     tripulacao(20), carga(0), agua(100), maxAgua(100), isAutonoma(true),
     semTripulantes(false) ,instantesRestantes(5), emCidade(false),
-    modoDetalhado(false), isBarbara(false){}
+    modoDetalhado(false), isBarbara(false), maxTripulacao(50){}
 
 string Caravana::mostrarEstado() const {
     ostringstream descricao;
@@ -218,4 +218,8 @@ bool Caravana::obterModoDetalhado() const {
 
 int Caravana::calcularPoderCombate() {
     return rand() % (tripulacao + 1);
+}
+
+int Caravana::obterMaxTripulacao() const {
+    return maxTripulacao;
 }

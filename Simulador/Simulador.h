@@ -55,6 +55,10 @@ public:
 
     void executar();
 
+    void verificarItensAdjacentes();
+
+    void aplicarEfeito(Caravana &caravana, Item &item);
+
     void execInstantes(int auxInstantes);
 
     void lerComandos(const std::string &comando);

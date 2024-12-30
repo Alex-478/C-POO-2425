@@ -3,6 +3,7 @@
 CaravanaMilitar::CaravanaMilitar(int linha, int coluna)
     : Caravana("Militar", linha, coluna) {
     tripulacao = 0;
+    maxTripulacao = 40;
     maxAgua = 400;
     maxCarga = 5;
 }

@@ -2,6 +2,8 @@
 
 CaravanaComercio::CaravanaComercio(int linha, int coluna)
     : Caravana("Comercio", linha, coluna) {
+    maxTripulacao = 40;
+    tripulacao = 20;
     maxAgua = 200;
     maxCarga = 40;
 }

@@ -1,7 +1,6 @@
 #ifndef MAPA_H
 #define MAPA_H
 
-
 #include <fstream>
 #include <iostream>
 #include <cstring> // Para memset
@@ -19,15 +18,15 @@ public:
     Mapa(int l, int c);
 
     explicit Mapa(nullptr_t null);
-    // Copy constructor
+    // Construtur copia
     Mapa(const Mapa& other);
-    // Assignment operator
+    // Operador de atribuição
     Mapa& operator=(const Mapa& other);
 
 
     ~Mapa();  // Destrutor para liberar a memória alocada
     void limpar();
-    //void carregarDeArquivo(const std::string& nomeArquivo); // Carrega o mapa de um ficheiro
+
     void exibir() const;  // Mostra o mapa no ecrã
     void definirCelula(int linha, int coluna, char valor);  // Define o valor de uma célula
     //gets

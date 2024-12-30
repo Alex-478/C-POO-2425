@@ -14,6 +14,7 @@ protected:
     static int nID;
     int id;
     int tripulacao; // tripulantes
+    int maxTripulacao;
     int carga;      // carga em toneladas
     int maxCarga;
     int agua;       // água disponível
@@ -27,6 +28,7 @@ protected:
     bool emCidade; // Indica se a caravana já está em uma cidade
     bool modoDetalhado;
     bool isBarbara;
+    int duracao;
 public:
     Caravana(const string &tipo, int linha, int coluna);
 
@@ -47,6 +49,8 @@ public:
     bool obterModoDetalhado() const;
 
     int calcularPoderCombate();
+
+    int obterMaxTripulacao() const;
 
     virtual void moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana *> &caravanas,
                                const vector<Item *> &itens, const Mapa &mapa);

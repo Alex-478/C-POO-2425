@@ -464,9 +464,9 @@ void Simulador::verificarItensAdjacentes() {
         }
 
         // Verifica se a caravana ficou sem tripulantes após o efeito
-        if (caravana->obterTripulacao() == 0) {
+        if (caravana->obterDestruir()) {
             std::cout << "Caravana " << caravana->obterID()
-                      << " foi destruída e será removida do simulador." << std::endl;
+                      << " foi destruída e sera removida do simulador." << std::endl;
 
             delete caravana;                // Libera a memória da caravana
             caravanaIt = caravanas.erase(caravanaIt); // Remove do vetor e ajusta o iterador
@@ -507,12 +507,14 @@ switch (static_cast<TipoItem>(item.obterTipo())) {
         std::cout << "A caravana " << caravana.obterID()
                   << " pisou em uma Mina! Foi completamente destruida." << std::endl;
         caravana.destruir(); // Chama o metodo para destruir a caravana
+        caravana.setDestruir(true);
         break;
     }
     case TipoItem::Surpresa: {
         std::cout << "A caravana " << caravana.obterID()
                   << " pisou em uma Mina! Foi completamente destruida." << std::endl;
         caravana.destruir(); // Chama o metodo para destruir a caravana
+        caravana.setDestruir(true);
         break;
     }
     default: {
@@ -712,7 +714,7 @@ void Simulador::lerComandos(const string& comando) {
     } else if (cmd == "exec") {
         string filename;
         ss >> filename;
-        executar();
+        execFicheiro(filename);
     } else if (cmd == "prox") {
         int n = 1;  // default value
         ss >> n;
@@ -802,8 +804,16 @@ void Simulador::lerComandos(const string& comando) {
     }
 }
 
+void Simulador::execFicheiro(const std::string &nomeFicheiro) {
+    std::ifstream file(nomeFicheiro);
+    if (!file) {
+        std::cerr << "Erro ao abrir o ficheiro de comandos." << std::endl;
+        return;
+    }
 
+    std::string comando;
+    while (std::getline(file, comando)) {
+        lerComandos(comando);
+    }
+}
 
-
-//list
-//dels

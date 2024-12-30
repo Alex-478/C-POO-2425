@@ -28,7 +28,7 @@ protected:
     bool emCidade; // Indica se a caravana já está em uma cidade
     bool modoDetalhado;
     bool isBarbara;
-    int duracao;
+    bool destruida;
 public:
     Caravana(const string &tipo, int linha, int coluna);
 
@@ -51,6 +51,10 @@ public:
     int calcularPoderCombate();
 
     int obterMaxTripulacao() const;
+
+    void setDestruir(bool estado);
+
+    bool obterDestruir() const;
 
     virtual void moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana *> &caravanas,
                                const vector<Item *> &itens, const Mapa &mapa);

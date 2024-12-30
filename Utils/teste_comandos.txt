@@ -1,11 +1,6 @@
-# Phase 1: Load map and configuration
-config assets/map_config.txt
-
-# Phase 2: Commands for simulation
-move 1 D       
+move 1 D
 move 1 B        
-coins 500       
-buyc a C        
-sand 3 3 1      
-exec assets/test_commands.txt 
-exit           
+prox 1
+moedas 1000
+comprac a C
+prox 1

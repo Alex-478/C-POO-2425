@@ -5,7 +5,7 @@ Caravana::Caravana(const string& tipo, int linha, int coluna)
     : id(++nID), tipo(tipo), linha(linha), coluna(coluna),
     tripulacao(20), carga(0), agua(100), maxAgua(100), isAutonoma(true),
     semTripulantes(false) ,instantesRestantes(5), emCidade(false),
-    modoDetalhado(false), isBarbara(false), maxTripulacao(50){}
+    modoDetalhado(false), isBarbara(false), maxTripulacao(50), destruida(false){}
 
 string Caravana::mostrarEstado() const {
     ostringstream descricao;
@@ -161,7 +161,7 @@ void Caravana::aumentarAgua(int quantidade) {
 }
 void Caravana::gastarAgua() {
     agua--;
-    cout << "Caravana " << id << " gastou 1 unidade de água." << endl;
+    //cout << "Caravana " << id << " gastou 1 unidade de água." << endl;
     if (agua < 0) agua = 0;
 
 }
@@ -222,4 +222,10 @@ int Caravana::calcularPoderCombate() {
 
 int Caravana::obterMaxTripulacao() const {
     return maxTripulacao;
+}
+void Caravana::setDestruir(bool estado) {
+    destruida = estado;
+}
+bool Caravana::obterDestruir() const {
+    return destruida;
 }

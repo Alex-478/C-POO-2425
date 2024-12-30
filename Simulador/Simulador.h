@@ -63,6 +63,8 @@ public:
 
     void lerComandos(const std::string &comando);
 
+    void execFicheiro(const std::string &nomeFicheiro);
+
     void saves(const string &nome);
 
     void loads(const std::string &nome) const;

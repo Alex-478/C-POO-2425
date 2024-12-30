@@ -6,6 +6,8 @@ CaravanaBarbara::CaravanaBarbara(int linha, int coluna)
     maxAgua = 200;
     maxCarga = 40;
     tripulacao = 40;
+    isBarbara = true;
+    isAutonoma = true;
 }
 void CaravanaBarbara::afetadaPorTempestade() {
     int perdaTripulacao = tripulacao / 10; // Perde 10% da tripulação

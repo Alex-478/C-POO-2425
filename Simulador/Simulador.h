@@ -14,6 +14,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <memory>
+#include <map>
 using namespace std;
 
 class Simulador {
@@ -25,7 +27,10 @@ class Simulador {
     int instantes;                          // Contador de instantes da simulação
     //int auxInstantes;
     int linhas, colunas;                    // Dimensões do mapa e do buffer
-    Buffer buffer2;                         // Buffer 2D para o estado do ecrã
+    Buffer buffer;                         // Buffer 2D para o estado do ecrã
+    map <string, Buffer> estadosBuffer;
+    int combatesGanhos;                     // Contador de combates ganhos
+    bool terminar;
 
     // Variáveis do ficheiro
     int moedasIniciais;                     // Moedas iniciais
@@ -54,6 +59,14 @@ public:
 
     void lerComandos(const std::string &comando);
 
+    void saves(const string &nome);
+
+    void loads(const std::string &nome) const;
+
+    void list() const;
+
+    void del(const std::string &nome);
+
     void gerarItens();
 
     void verificarItensExpirados();
@@ -79,6 +92,12 @@ public:
 
     void logs();
 
+    void terminarSimulador();
+
+    void processarCombate(Caravana *caravana1, Caravana *caravana2);
+
+    void criaBarbaro(int linha, int coluna);
+
     void adicionarCaravanaCidade(Caravana *caravana);
 
     string obterDescricaoCidade(int idCidade) const;
@@ -88,6 +107,8 @@ public:
     void venda(int id);
 
     void compraCaravana(int idCidade, char tipo);
+
+    void compraTripulacao(int id, int quantidade);
 
     void verificarInteracaoCidade(Caravana &caravana);
 

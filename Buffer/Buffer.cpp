@@ -7,12 +7,55 @@ void Buffer::atualizarCaravanas(const vector<Caravana*>& caravanas) {
     }
 }
 
+Buffer::Buffer() : linhas(0), colunas(0), buffer(nullptr) {}
 
 // Construtor para iniciar o tamanho do buffer
 Buffer::Buffer(int l, int c) : linhas(l), colunas(c) {
     buffer = make_unique<char[]>(linhas * colunas);
     limpar();  // limpa tudo
 }
+
+// Copy constructor
+Buffer::Buffer(const Buffer& other) : linhas(other.linhas), colunas(other.colunas) {
+    buffer = make_unique<char[]>(linhas * colunas);
+    copy(other.buffer.get(), other.buffer.get() + linhas * colunas, buffer.get());
+}
+
+// Copy assignment operator
+/*Buffer& Buffer::operator=(const Buffer& other) {
+    if (this == &other) return *this; // self-assignment check
+
+    linhas = other.linhas;
+    colunas = other.colunas;
+    buffer = std::make_unique<char[]>(linhas * colunas);
+    std::copy(other.buffer.get(), other.buffer.get() + linhas * colunas, buffer.get());
+
+    return *this;
+}
+*/
+Buffer& Buffer::operator=(const Buffer& other) {
+    if (this == &other) return *this; // self-assignment check
+
+    linhas = other.linhas;
+    colunas = other.colunas;
+    // Aloca novo espaço para o buffer e copia os dados
+    buffer = std::make_unique<char[]>(linhas * colunas);
+    std::copy(other.buffer.get(), other.buffer.get() + (linhas * colunas), buffer.get());
+
+    return *this;
+}
+
+
+char* Buffer::obterDados() {
+    return buffer.get();
+}
+// Copia o estado do buffer para outro array
+void Buffer::copiarEstado(char* destino) const {
+    copy(buffer.get(), buffer.get() + (linhas * colunas), destino);
+}
+int Buffer::obterLinhas() const { return linhas; }
+int Buffer::obterColunas() const { return colunas; }
+
 
 // Clear the buffer (reset to empty state)
 void Buffer::limpar() {

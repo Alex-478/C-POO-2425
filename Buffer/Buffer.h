@@ -18,7 +18,22 @@ class Buffer {
     unique_ptr<char[]> buffer;
 
 public:
+    Buffer();
     Buffer(int rows, int cols);
+
+    Buffer(const Buffer &other);
+
+
+    Buffer &operator=(const Buffer &other);
+
+    char *obterDados();
+
+    void copiarEstado(char *destino) const;
+
+    int obterLinhas() const;
+
+    int obterColunas() const;
+
     void limpar();
 
     void atualizarBuffer(const Mapa& mapa);

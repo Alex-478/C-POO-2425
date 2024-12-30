@@ -5,7 +5,7 @@ Caravana::Caravana(const string& tipo, int linha, int coluna)
     : id(++nID), tipo(tipo), linha(linha), coluna(coluna),
     tripulacao(20), carga(0), agua(100), maxAgua(100), isAutonoma(true),
     semTripulantes(false) ,instantesRestantes(5), emCidade(false),
-    modoDetalhado(false){}
+    modoDetalhado(false), isBarbara(false){}
 
 string Caravana::mostrarEstado() const {
     ostringstream descricao;
@@ -17,7 +17,9 @@ string Caravana::mostrarEstado() const {
             << ", Posicao: (" << linha << ", " << coluna << ")" << endl;
     return descricao.str(); // Retorna a descrição da caravana
 }
-
+bool Caravana::estadoBarbara() const {
+    return isBarbara;
+}
 void Caravana::moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Caravana*>& caravanas, const vector<Item*>& itens, const Mapa &mapa) {
     if (isAutonoma) {
         int direcao = rand() % 4;
@@ -39,8 +41,6 @@ void Caravana::moverAutonomo(int mapaLinhas, int mapaColunas, const vector<Carav
         }
     }
 }
-
-
 
 void Caravana::mover(char direcao, int mapaLinhas, int mapaColunas, const Mapa& mapa) {
     ostringstream descricao;
@@ -214,4 +214,8 @@ void Caravana::setModoDetalhado(bool estado) {
 }
 bool Caravana::obterModoDetalhado() const {
     return modoDetalhado;
+}
+
+int Caravana::calcularPoderCombate() {
+    return rand() % (tripulacao + 1);
 }

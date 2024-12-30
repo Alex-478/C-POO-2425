@@ -10,7 +10,7 @@
 #include "../Caravanas/Caravana.h"
 #include "../Mapa/mapa.h"
 
-using namespace std;  // Adiciona caravanas ao buffer
+using namespace std; // Adiciona caravanas ao buffer
 
 
 class Buffer {
@@ -19,10 +19,10 @@ class Buffer {
 
 public:
     Buffer();
+
     Buffer(int rows, int cols);
 
     Buffer(const Buffer &other);
-
 
     Buffer &operator=(const Buffer &other);
 
@@ -36,14 +36,13 @@ public:
 
     void limpar();
 
-    void atualizarBuffer(const Mapa& mapa);
+    void atualizarBuffer(const Mapa &mapa);
 
-   // void atualizarMapa(const vector<vector<char>> &mapGrid, Mapa mapa);
-    void atualizarCaravanas(const vector<Caravana*>& caravans);
+
+    void atualizarCaravanas(const vector<Caravana *> &caravans);
+
     void mostrar() const;
-
 };
-
 
 
 #endif //BUFFER_H

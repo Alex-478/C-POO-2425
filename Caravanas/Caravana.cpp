@@ -113,8 +113,6 @@ void Caravana::destruir() {
     cout << "Caravana destruída!" << endl;
 }
 
-
-
 bool Caravana::estaSemTripulantes() {
     if(tripulacao > 0) semTripulantes = false;
     if(tripulacao <= 0) semTripulantes = true;

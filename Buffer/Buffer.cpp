@@ -1,11 +1,4 @@
 #include "Buffer.h"
-void Buffer::atualizarCaravanas(const vector<Caravana*>& caravanas) {
-    for (const Caravana* caravana : caravanas) {
-        int lin = caravana->obterLinha();
-        int col = caravana->obterColuna();
-        buffer[lin * colunas + col] = '1'; // Represent the caravan
-    }
-}
 
 Buffer::Buffer() : linhas(0), colunas(0), buffer(nullptr) {}
 
@@ -15,24 +8,12 @@ Buffer::Buffer(int l, int c) : linhas(l), colunas(c) {
     limpar();  // limpa tudo
 }
 
-// Copy constructor
+//Construtor Copia
 Buffer::Buffer(const Buffer& other) : linhas(other.linhas), colunas(other.colunas) {
     buffer = make_unique<char[]>(linhas * colunas);
     copy(other.buffer.get(), other.buffer.get() + linhas * colunas, buffer.get());
 }
 
-// Copy assignment operator
-/*Buffer& Buffer::operator=(const Buffer& other) {
-    if (this == &other) return *this; // self-assignment check
-
-    linhas = other.linhas;
-    colunas = other.colunas;
-    buffer = std::make_unique<char[]>(linhas * colunas);
-    std::copy(other.buffer.get(), other.buffer.get() + linhas * colunas, buffer.get());
-
-    return *this;
-}
-*/
 Buffer& Buffer::operator=(const Buffer& other) {
     if (this == &other) return *this; // self-assignment check
 

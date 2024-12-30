@@ -413,23 +413,23 @@ void Simulador::loads(const string& nome) const {
 }
 void Simulador::list() const {
     if (estadosBuffer.empty()) {
-        std::cout << "Nenhum buffer armazenado." << std::endl;
+        cout << "Nenhum buffer armazenado." << endl;
         return;
     }
 
-    std::cout << "Buffers armazenados:" << std::endl;
+    cout << "Buffers armazenados:" << endl;
     for (const auto& [nome, _] : estadosBuffer) {
-        std::cout << "- " << nome << std::endl;
+        cout << "- " << nome << endl;
     }
 }
-void Simulador::del(const std::string& nome) {
+void Simulador::del(const string& nome) {
     auto it = estadosBuffer.find(nome); // Procura pelo nome no map
 
     if (it != estadosBuffer.end()) {
         estadosBuffer.erase(it); // Remove o buffer encontrado
-        std::cout << "Buffer \"" << nome << "\" foi removido com sucesso." << std::endl;
+        cout << "Buffer \"" << nome << "\" foi removido com sucesso." << endl;
     } else {
-        std::cout << "Nenhum buffer encontrado com o nome \"" << nome << "\"." << std::endl;
+        cout << "Nenhum buffer encontrado com o nome \"" << nome << "\"." << endl;
     }
 }
 //Itens
@@ -445,9 +445,9 @@ void Simulador::verificarItensAdjacentes() {
 
             // Verifica se o item está em uma posição adjacente
             if (adjacente(linhaCaravana, colunaCaravana, item->obterLinha(), item->obterColuna())) {
-                std::cout << "Caravana " << caravana->obterID()
+                cout << "Caravana " << caravana->obterID()
                           << " encontrou um item do tipo " << item->tipoItemParaString()
-                          << " na posição (" << item->obterLinha() << ", " << item->obterColuna() << ")." << std::endl;
+                          << " na posição (" << item->obterLinha() << ", " << item->obterColuna() << ")." << endl;
 
                 // Aplica o efeito do item na caravana
                 aplicarEfeito(*caravana, *item);
@@ -465,8 +465,8 @@ void Simulador::verificarItensAdjacentes() {
 
         // Verifica se a caravana ficou sem tripulantes após o efeito
         if (caravana->obterDestruir()) {
-            std::cout << "Caravana " << caravana->obterID()
-                      << " foi destruída e sera removida do simulador." << std::endl;
+            cout << "Caravana " << caravana->obterID()
+                      << " foi destruída e sera removida do simulador." << endl;
 
             delete caravana;                // Libera a memória da caravana
             caravanaIt = caravanas.erase(caravanaIt); // Remove do vetor e ajusta o iterador
@@ -481,15 +481,15 @@ switch (static_cast<TipoItem>(item.obterTipo())) {
     case TipoItem::CaixaPandora: {
         int tripulantesPerdidos = caravana.obterTripulacao() * 0.2;
         caravana.reduzirTripulacao(tripulantesPerdidos); // Perde 20% da tripulação
-        std::cout << "A caravana " << caravana.obterID()
+        cout << "A caravana " << caravana.obterID()
                   << " abriu a Caixa de Pandora! Perdeu " << tripulantesPerdidos
-                  << " tripulantes devido a doencas." << std::endl;
+                  << " tripulantes devido a doencas." << endl;
         break;
     }
     case TipoItem::ArcaTesouro: {
         moedas += moedas * 0.1;
-        std::cout << "A caravana " << caravana.obterID()
-                  << " encontrou uma Arca de Tesouro! Ganhou 10% de moedas." << std::endl;
+        cout << "A caravana " << caravana.obterID()
+                  << " encontrou uma Arca de Tesouro! Ganhou 10% de moedas." << endl;
         break;
     }
     case TipoItem::Jaula: {
@@ -497,28 +497,28 @@ switch (static_cast<TipoItem>(item.obterTipo())) {
         int espacoDisponivel = caravana.obterMaxTripulacao() - caravana.obterTripulacao();
         if (espacoDisponivel > 0) {
             caravana.aumentarTripulacao(espacoDisponivel);
-            std::cout << "A caravana " << caravana.obterID()
+            cout << "A caravana " << caravana.obterID()
                       << " libertou prisioneiros! Ganhou " << espacoDisponivel
-                      << " novos tripulantes." << std::endl;
+                      << " novos tripulantes." << endl;
         }
         break;
     }
     case TipoItem::Mina: {
-        std::cout << "A caravana " << caravana.obterID()
-                  << " pisou em uma Mina! Foi completamente destruida." << std::endl;
+        cout << "A caravana " << caravana.obterID()
+                  << " pisou em uma Mina! Foi completamente destruida." << endl;
         caravana.destruir(); // Chama o metodo para destruir a caravana
         caravana.setDestruir(true);
         break;
     }
     case TipoItem::Surpresa: {
-        std::cout << "A caravana " << caravana.obterID()
-                  << " pisou em uma Mina! Foi completamente destruida." << std::endl;
+        cout << "A caravana " << caravana.obterID()
+                  << " pisou em uma Mina! Foi completamente destruida." << endl;
         caravana.destruir(); // Chama o metodo para destruir a caravana
         caravana.setDestruir(true);
         break;
     }
     default: {
-        std::cout << "Item desconhecido. Nenhum efeito aplicado." << std::endl;
+        cout << "Item desconhecido. Nenhum efeito aplicado." << endl;
         break;
     }
 }
@@ -804,15 +804,15 @@ void Simulador::lerComandos(const string& comando) {
     }
 }
 
-void Simulador::execFicheiro(const std::string &nomeFicheiro) {
-    std::ifstream file(nomeFicheiro);
+void Simulador::execFicheiro(const string &nomeFicheiro) {
+    ifstream file(nomeFicheiro);
     if (!file) {
-        std::cerr << "Erro ao abrir o ficheiro de comandos." << std::endl;
+        cerr << "Erro ao abrir o ficheiro de comandos." << endl;
         return;
     }
 
-    std::string comando;
-    while (std::getline(file, comando)) {
+    string comando;
+    while (getline(file, comando)) {
         lerComandos(comando);
     }
 }
